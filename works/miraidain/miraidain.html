@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>プロジェクトタイトル</title>
+  <meta name="description" content="プロジェクト概要（1〜2文）" />
+
+  <link rel="stylesheet" href="../../css/work.css" />
+  <script defer src="../../js/work.js"></script>
+
+  <!-- 方式1：ページごとにテーマを変える（ここだけ編集） -->
+  <style>
+    :root{
+      /* 色 */
+      --bg: #FF9C3A;
+      --text: #343434;
+      --muted: #343434;
+      --line: #343434;
+
+      --paper: #343434;          /* 画像未設定時の灰箱 */
+      --accent: #343434;         /* スライダーのドット等 */
+
+      --header-bg: #FF9C3A;
+      --header-border: #343434;
+
+      /* フォント */
+      --font: "Noto Serif JP","Yu Mincho","Hiragino Mincho ProN","Times New Roman",serif;
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header class="header">
+    <div class="header__inner">
+      <a class="back" href="../../" aria-label="Homeに戻る">←Home</a>
+
+      <!-- <nav class="nav" aria-label="ページ内ナビゲーション">
+        <a class="nav__item" href="#top">Top</a>
+        <a class="nav__item" href="#concept">Concept</a>
+        <a class="nav__item" href="#work">Work</a>
+        <a class="nav__item" href="#role">Role</a>
+        <a class="nav__item" href="#achieve">Achieve</a>
+        <a class="nav__item" href="#link">Link</a> -->
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Top -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <h1 class="title">未来建築ミライダイン</h1>
+          <p class="lead">
+            所属サークルの大学祭の企画として、大学建築をテーマにしたロボットフィギュアの製作を行いました。私は企画とパッケージデザインを担当しました。<br />
+            <br />
+            制作人数：２人<br />
+            開発期間：約２週間<br />
+            主な使用ツール：Blender, Photoshop, Illustrator<br />
+          </p>
+        </div>
+
+        <!-- 右上：画像スライダー -->
+        <div class="hero__media">
+          <div class="carousel" data-carousel aria-label="画像スライダー">
+            <div class="carousel__viewport" aria-live="polite">
+              <figure class="carousel__item" data-caption="特徴的なガラス張りの弊大学の建築物がもしも変形して巨大ロボットになったら！？をコンセプトにサークルと大学の宣伝を兼ねて企画を立案">
+                <img src="./images/shot1.jpg" alt="画像1" />
+              </figure>
+              <figure class="carousel__item" data-caption="モデリング担当と話し合い、デザインを固めていき、最終的には3Dプリンタで印刷したフィギュアとパッケージを学祭で展示した。">
+                <img src="./images/shot2.jpg" alt="画像2" />
+              </figure>
+              <figure class="carousel__item" data-caption="学祭での展示の際に地域の人からの反響も大きく、地域のフリーペーパー誌に取り上げていただいた。">
+                <img src="./images/shot3.jpg" alt="画像3" />
+              </figure>
+            </div>
+
+            <div class="carousel__caption" data-carousel-caption></div>
+
+            <div class="carousel__controls">
+              <button class="carousel__btn" type="button" data-carousel-prev aria-label="前の画像へ">◀</button>
+              <div class="carousel__dots" data-carousel-dots aria-label="スライド位置"></div>
+              <button class="carousel__btn" type="button" data-carousel-next aria-label="次の画像へ">▶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Concept -->
+    <!-- <section id="concept" class="section section--center">
+      <h2 class="h2">活動の目的や意義</h2>
+
+      <figure class="wideFigure"> -->
+        <!-- 画像を置くならこの img を使う -->
+        <!-- <img src="./images/concept.jpg" alt="活動の目的や意義を表す画像" /> -->
+      <!-- </figure>
+
+      <p class="note">（必要なら一言だけ添える）</p>
+    </section> -->
+
+    <!-- Work -->
+    <!-- <section id="work" class="section section--center">
+      <h2 class="h2">活動の体制</h2>
+
+      <figure class="wideFigure"> -->
+        <!-- <img src="./images/team.jpg" alt="活動の体制を表す画像" /> -->
+      <!-- </figure>
+
+      <p class="note">（必要なら一言だけ添える）</p>
+    </section> -->
+
+    <!-- Role -->
+
+    <!-- Achieve -->
+    <section id="achieve" class="section">
+      <h2 class="h2 h2--left">実績</h2>
+
+      <ul class="list">
+        <li class="placeholder"></li>
+        <li>函館フリーペーパー誌「peeps」掲載</li>
+        <!-- <li>公開：○○</li> -->
+      </ul>
+    </section>
+
+    <!-- Link -->
+  </main>
+</body>
+</html>

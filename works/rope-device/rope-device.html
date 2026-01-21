@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>プロジェクトタイトル</title>
+  <meta name="description" content="プロジェクト概要（1〜2文）" />
+
+  <link rel="stylesheet" href="../../css/work.css" />
+  <script defer src="../../js/work.js"></script>
+
+  <!-- 方式1：ページごとにテーマを変える（ここだけ編集） -->
+  <style>
+    :root{
+      /* 色 */
+      --bg: #161510;
+      --text: #ffffff;
+      --muted: #ffffff;
+      --line: #dddddd;
+
+      --paper: #e6e6e6;          /* 画像未設定時の灰箱 */
+      --accent: #777777;         /* スライダーのドット等 */
+
+      --header-bg: #161510;
+      --header-border: #dddddd;
+
+      /* フォント */
+      --font: "Noto Serif JP","Yu Mincho","Hiragino Mincho ProN","Times New Roman",serif;
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header class="header">
+    <div class="header__inner">
+      <a class="back" href="../../" aria-label="Homeに戻る">←Home</a>
+
+      <!-- <nav class="nav" aria-label="ページ内ナビゲーション">
+        <a class="nav__item" href="#top">Top</a>
+        <a class="nav__item" href="#concept">Concept</a>
+        <a class="nav__item" href="#work">Work</a>
+        <a class="nav__item" href="#role">Role</a>
+        <a class="nav__item" href="#achieve">Achieve</a>
+        <a class="nav__item" href="#link">Link</a> -->
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Top -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <h1 class="title">機能性繊維を用いた<br />紐型デバイスの開発</h1>
+          <p class="lead">
+            組紐からインスピレーションを得て、機能性繊維を用いた「紐型デバイス」の研究・開発に取り組んでいる研究です。紐という扱いやすい形状をベースに、入力と出力の両方を扱えるインタフェースとして成立させることを目指しています。<br />
+            <br />
+            研究期間：約２年<br />
+            研究キーワード：組紐、導電糸、サーモクロミック、タンジブルインタフェース<br />
+          </p>
+        </div>
+
+        <!-- 右上：画像スライダー -->
+        <div class="hero__media">
+          <div class="carousel" data-carousel aria-label="画像スライダー">
+            <div class="carousel__viewport" aria-live="polite">
+              <figure class="carousel__item" data-caption="本研究では、組紐に使われる紐に導電糸等を組み込むことで、従来の組紐にセンシング機能等を付与し、タンジブル・インタフェース等に活用できる組紐型デバイスを開発する。">
+                <img src="./images/shot1.jpg" alt="画像1" />
+              </figure>
+              <figure class="carousel__item" data-caption="導電糸やクロミック繊維などの組み方をカスタマイズすることで、引張や手指の接触を判定するセンシング機能や、繊維素材の変色による出力表現機能を持った組紐型デバイスを製作する。">
+                <img src="./images/shot2.jpg" alt="画像2" />
+              </figure>
+              <figure class="carousel__item" data-caption="さらに、組紐型デバイスの応用例として、蓋の開閉を検出し温度変化を可視化する「急須紐」と、持ち上げ動作を検出して応答を返す「関守石」を試作した。">
+                <img src="./images/shot3.jpg" alt="画像3" />
+              </figure>
+            </div>
+
+            <div class="carousel__caption" data-carousel-caption></div>
+
+            <div class="carousel__controls">
+              <button class="carousel__btn" type="button" data-carousel-prev aria-label="前の画像へ">◀</button>
+              <div class="carousel__dots" data-carousel-dots aria-label="スライド位置"></div>
+              <button class="carousel__btn" type="button" data-carousel-next aria-label="次の画像へ">▶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Concept -->
+    <!-- <section id="concept" class="section section--center">
+      <h2 class="h2">活動の目的や意義</h2>
+
+      <figure class="wideFigure"> -->
+        <!-- 画像を置くならこの img を使う -->
+        <!-- <img src="./images/concept.jpg" alt="活動の目的や意義を表す画像" /> -->
+      <!-- </figure>
+
+      <p class="note">（必要なら一言だけ添える）</p>
+    </section> -->
+
+    <!-- Work -->
+    <!-- <section id="work" class="section section--center">
+      <h2 class="h2">活動の体制</h2>
+
+      <figure class="wideFigure"> -->
+        <!-- <img src="./images/team.jpg" alt="活動の体制を表す画像" /> -->
+      <!-- </figure>
+
+      <p class="note">（必要なら一言だけ添える）</p>
+    </section> -->
+
+    <!-- Role -->
+    <section id="role" class="section">
+      <h2 class="h2 h2--left">研究コンセプト</h2>
+
+      <div class="body">
+        紐は、結ぶ・ほどく・引く・撫でる・ねじるなど、日常動作と結びついた豊かな操作が可能です。<br />
+        このプロジェクトでは、そうした“自然な動き”を起点に、機能性繊維を組み合わせることで、紐そのものをインタラクションの媒体にすることを狙いました。<br />
+        単にセンサーを外付けするのではなく、素材・構造・操作感を一体として設計し、触り心地や見た目も含めて体験として整える方針で進めています。<br />
+      </div>
+    </section>
+
+    <!-- Achieve -->
+    <section id="achieve" class="section">
+      <h2 class="h2 h2--left">発表実績</h2>
+
+      <ul class="list">
+        <li class="placeholder"></li>
+        <li><a href="https://www.wiss.org/WISS2025Proceedings/data/demo/1-C07.pdf" target="_blank" rel="noreferrer">穂積 佳，塚田 浩二，吉田 博則. 機能性繊維を用いた組紐型デバイスの伝統的道具への応用. 日本ソフトウェア科学会 WISS2025 予稿集, デモ発表 1-C07. 2025-12.</a></li>
+        <li><a href="https://mobiquitous.com/pub/2024-fun/int2025_hozumi.pdf" target="_blank" rel="noreferrer">穂積 佳, 塚田 浩二, 吉田 博則. 導電糸とサーモクロミック糸を用いた 入出力が可能な組紐型デバイスの製作. 情報処理学会 インタラクション2025論文集, インタラクティブ発表（プレミアム発表）, 3B58, pp.1272-1277. 2025-3.</a></li>
+        <li><a href="https://mobiquitous.com/pub/2024-fun/hci208_hozumi.pdf" target="_blank" rel="noreferrer">穂積 佳, 塚田 浩二, 吉田 博則. 導電糸を活用した組紐型タンジブル・インタフェースの基礎検討. 情報処理学会研究報告, 2024-HCI-208(24), pp.1-7. 2024-6.【HCI研究会 2024年度学生奨励賞】</a></li>
+        <!-- <li>公開：○○</li> -->
+      </ul>
+    </section>
+
+    <!-- Link -->
+    <section id="link" class="section">
+      <h2 class="h2 h2--left">外部リンク</h2>
+
+      <ul class="links">
+        <li class="placeholder"></li>
+        <li><a href="https://tsuka-lab.org/projects/braided-interface" target="_blank" rel="noreferrer">所属研究室サイトによる本研究の紹介</a></li>
+        <li><a href="https://www.d-pam.com/fun/2515040/index.html?tm=1#target/page_no=28" target=_blank" rel="noreferrer">大学パンフレットによる本研究の紹介</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

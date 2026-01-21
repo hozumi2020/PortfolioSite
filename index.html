@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hozumi KEI - Portfolio</title>
+  <style>
+
+    /* ===== Pixel Font (local file) =====
+       Put this file in: assets/fonts/x12y16pxMaruMonica.ttf
+    */
+    @font-face{
+      font-family: "MaruMonicaPx";
+      src: url("./assets/fonts/x12y16pxMaruMonica.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    :root{
+      /* デフォルト */
+      --bg:#F0F0F0;
+      --text:#111;
+      --muted:#666;
+
+      /* テーマとして切り替える変数（JSで更新） */
+      --pageBg: var(--bg);
+      --pageText: var(--text);
+      --pageMuted: var(--muted);
+
+      --shadow: 0 8px 22px rgba(0,0,0,.14);
+
+      /* カード（大きめ） */
+      --cardW: 380px;
+      --cardH: 200px;
+      --radius: 18px;
+
+      /* 横方向の固定間隔（全レーンで揃える） */
+      --gap: 30px;
+
+      /* ✅ 2段 */
+      --laneH: 210px;
+      --laneGap: 18px;
+      --stagePad: 8px;
+      --stageTopGap: 80px; /* カードエリアを少し下げる */
+
+      --flowStageH: calc((var(--laneH) * 2) + (var(--laneGap) * 1) + (var(--stagePad) * 2));
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", Arial;
+      background: var(--pageBg);
+      color: var(--pageText);
+      transition: background-color .35s ease, color .35s ease;
+    }
+
+    .frame{
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      border: none;
+      background: var(--pageBg);
+      min-height: 100vh;
+      padding:
+        calc(10px + env(safe-area-inset-top))
+        calc(12px + env(safe-area-inset-right))
+        calc(12px + env(safe-area-inset-bottom))
+        calc(12px + env(safe-area-inset-left));
+      transition: background-color .35s ease;
+    }
+
+    header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .name{
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: .04em;
+    }
+    .name .jp{ font-size: 22px; }
+    .name .en{ font-size: 26px; margin-top: 4px; }
+
+    
+    /* Brand: icon + name */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+    }
+    .brandIcon{
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border-radius: 12px;
+      flex: 0 0 auto;
+    }
+.tagbar{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-start;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* タグボタン */
+    .tagbtn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      color: rgba(0,0,0,.88);
+      box-shadow: 0 2px 0 rgba(0,0,0,.35);
+      transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+      user-select:none;
+      white-space:nowrap;
+      letter-spacing: .02em;
+
+      /* 英/日を重ねて表示するため */
+      display: grid;
+      place-items: center;
+      position: relative;
+      line-height: 1.1;
+    }
+    .tagbtn:active{ transform: translateY(1px); }
+
+    /* 選択中の灰色枠（outline）なし */
+    .tagbtn[aria-pressed="true"]{
+      filter: saturate(1.05) brightness(1.02);
+    }
+
+    /* 通常：英語、ホバー/フォーカス：日本語 */
+    .tagbtn .tag-en,
+    .tagbtn .tag-ja{
+      grid-area: 1 / 1;
+      transition: opacity .16s ease, transform .16s ease;
+      will-change: opacity, transform;
+    }
+    .tagbtn .tag-en{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .tagbtn .tag-ja{
+      opacity: 0;
+      transform: translateY(2px);
+      pointer-events: none;
+    }
+    .tagbtn:hover .tag-en,
+    .tagbtn:focus-visible .tag-en,
+    .tagbtn:focus .tag-en{
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    .tagbtn:hover .tag-ja,
+    .tagbtn:focus-visible .tag-ja,
+    .tagbtn:focus .tag-ja{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stage{
+      position: relative;
+      width: 100%;
+      height: var(--flowStageH);
+      margin-top: var(--stageTopGap);
+      overflow: hidden;
+      border-radius: 10px;
+      transition: height .45s ease;
+    }
+
+    .laneGuides{
+      position:absolute;
+      left:0; right:0; top:0; bottom:0;
+      pointer-events:none;
+      opacity:.18;
+    }
+    .laneLine{
+      position:absolute;
+      left:0; right:0;
+      height: 1px;
+      background: rgba(0,0,0,.12);
+    }
+    /* ✅ 2段なので区切り線は1本だけ */
+    .laneLine.line1{ top: calc(var(--stagePad) + var(--laneH) + (var(--laneGap) / 2)); }
+
+    .card{
+      position:absolute;
+      left:0; top:0;
+      width: var(--cardW);
+      height: var(--cardH);
+      text-decoration:none;
+      color: inherit;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+      opacity: 1;
+      pointer-events:auto;
+      transition: none;
+    }
+    .card.tween{
+      transition:
+        transform 520ms cubic-bezier(.2,.9,.2,1),
+        opacity 360ms ease;
+    }
+
+    .cardInner{
+      width:100%;
+      height:100%;
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(0,0,0,.14);
+      border: 2px solid rgba(0,0,0,.05);
+      overflow:hidden;
+      transform: translateY(0);
+      transition: transform .12s ease, filter .12s ease;
+      position: relative;
+    }
+    .cardInner.hasImage .label{ display:none; }
+    .cardInner.hasImage .thumb{ background:none; }
+    .card:hover .cardInner{
+      transform: translateY(-2px);
+      filter: brightness(1.02);
+    }
+    .card:focus-visible{
+      outline: 4px solid rgba(0,0,0,.30);
+      outline-offset: 4px;
+      border-radius: 18px;
+    }
+
+    .thumb{
+      position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(0,0,0,.06), rgba(0,0,0,0));
+    }
+    .thumb img{
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .label{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: 14px 16px;
+      background: linear-gradient(to top, rgba(255,255,255,.96), rgba(255,255,255,0));
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .label .title{
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .02em;
+      color: rgba(0,0,0,.92);
+    }
+    .label .desc{
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: rgba(0,0,0,.78);
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .label .sub{
+      display:block;
+      font-weight: 900;
+      color: rgba(0,0,0,.56);
+      font-size: 11px;
+      letter-spacing: .02em;
+    }
+
+    .note{
+      margin-top: 10px;
+      color: color-mix(in srgb, var(--pageText) 55%, transparent);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px){
+      :root{
+        --cardW: 250px;
+        --cardH: 148px;
+        --laneH: 200px;
+        --gap: 18px;
+      }
+    }
+    @media (max-width: 760px){
+      header{ flex-direction: column; align-items:flex-start; }
+      :root{
+        --cardW: 220px;
+        --cardH: 138px;
+        --laneH: 188px;
+        --laneGap: 16px;
+        --gap: 16px;
+      }
+    }
+    @media (max-width: 520px){
+      :root{
+        --cardW: 190px;
+        --cardH: 122px;
+        --laneH: 170px;
+        --gap: 14px;
+      }
+    }
+  
+    /* ===== Overrides: no tag text in card, no bottom gradient at rest, hover reveals desc ===== */
+
+    /* タグ名（sub/メタ）をカード内に表示しない */
+    .label .sub{ display:none !important; }
+
+    /* 説明文はホバー/フォーカス時のみ表示 */
+    .label .desc{
+      opacity: 0;
+      transform: translateY(3px);
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity .18s ease, transform .18s ease, max-height .18s ease;
+      -webkit-line-clamp: unset;
+      display: block;
+    }
+    .card:hover .label .desc,
+    .card:focus-visible .label .desc{
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 80px;
+    }
+
+    /* 画像カード：タイトルは常時表示、通常時は下部グラデーション無し */
+    .cardInner.hasImage .label{
+      display: flex !important;           /* 画像でもラベルを出す */
+      background: none !important;        /* 通常時はグラデーション無し */
+      text-shadow: 0 1px 2px rgba(0,0,0,.65);
+    }
+    .cardInner.hasImage .label .title,
+    .cardInner.hasImage .label .desc{
+      color: rgba(255,255,255,.95);
+    }
+
+    /* 画像カード：ホバー時に画像を暗くし、同時に文字背景を薄く敷く（グラデではなく単色） */
+    .cardInner.hasImage .thumb img{
+      transition: filter .18s ease;
+    }
+    .card:hover .cardInner.hasImage .thumb img{
+      filter: brightness(.55);
+    }
+    /* 既存の hover で cardInner 全体を明るくする filter を打ち消す */
+    .card:hover .cardInner.hasImage{
+      filter: none !important;
+    }
+    .card:hover .cardInner.hasImage .label,
+    .card:focus-visible .cardInner.hasImage .label{
+      background: rgba(0,0,0,.40) !important;
+    }
+
+    /* 白フチっぽく見える場合の対策（透過PNG想定） */
+    .cardInner.hasImage{
+      background: transparent !important;
+      border: none !important;
+    }
+
+  
+    /* Force pixel font for name + card titles */
+    .name, .label .title{
+      font-family: "MaruMonicaPx", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", Arial !important;
+      font-weight: 400 !important;
+      font-synthesis: none;
+    }
+
+  
+    /* ===== Tab Description ===== */
+    .tabDescWrap{
+      margin-top: 8px;
+      margin-bottom: 8px;
+      max-width: 980px;
+    }
+    .tabDesc{
+      margin: 0;
+      padding: 10px 0 0 0;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.55;
+      color: color-mix(in srgb, var(--pageText) 78%, transparent);
+      white-space: pre-wrap; /* 改行を反映 */
+    }
+    @media (max-width: 760px){
+      .tabDescWrap{ max-width: 100%; margin-bottom: 12px; }
+      .tabDesc{ font-size: 12px; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="frame">
+    <header>
+      <div class="brand">
+        <img class="brandIcon" src="assets/main/icon.gif" alt="" decoding="async" />
+        <div class="name">
+        <div class="jp">穂積　佳</div>
+        <div class="en">Hozumi&nbsp;&nbsp;KEI</div>
+      </div>
+      </div>
+
+
+      <nav class="tagbar" id="tagbar" aria-label="タグフィルター"></nav>
+    </header>
+
+    
+
+    <section class="tabDescWrap" aria-label="セクション説明">
+      <p class="tabDesc" id="tabDesc"></p>
+    </section>
+
+<main>
+      <section class="stage" id="stage" aria-label="カード表示エリア">
+        <div class="laneGuides" aria-hidden="true">
+          <div class="laneLine line1"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const DEFAULT_BG = "#F0F0F0";
+
+    // en=通常表示 / ja=ホバー時表示
+    const TAGS = [
+      { key: "all",      en: "ALL",      ja: "すべて",       color: "#F0F0F0" },
+      { key: "pickup",   en: "PICKUP",   ja: "おすすめ",     color: "#f3c300" },
+      { key: "game",     en: "GAME",     ja: "ゲーム",       color: "#6dd38f" },
+      { key: "research", en: "RESEARCH", ja: "研究",         color: "#5b7bd5", text:"#ffffff" },
+      { key: "event",    en: "EVENT",    ja: "イベント",     color: "#a56adf", text:"#ffffff" },
+      { key: "product",  en: "PRODUCT",  ja: "プロダクト",   color: "#ff4aa5", text:"#ffffff" },
+      { key: "ops",      en: "OPS",      ja: "運営",         color: "#ffffff" },    ];
+
+
+    const TAB_DESCRIPTIONS = {
+      all: `このサイトは、これまでに制作してきたアウトプットやと活動記録をジャンル別に整理したポートフォリオです。
+右上部のタブからジャンルを切り替えることで、目的に合わせて作品を探しやすくしています。
+複数の領域が重なり合っているものも多いので、「おすすめ」に代表的なものをまとめておりますので、是非ご覧ください。`,
+      pickup: `はじめて見てくださる方に向けて、代表的な成果や、趣向が伝わりやすいコンテンツをまとめています。`,
+      game: `ゲーム作品や、ゲームに関するプロトタイプ／検証の記録をまとめています。`,
+      research: `所属研究室での研究や、大学課題などでの研究をまとめております。`,
+      event: `出展、演劇など、イベントに紐づく活動をまとめています。`,
+      product: `ツール、フィギュアなど、ユーザーを意識したプロダクトに関する成果物をまとめています。`,
+      ops: `イベントやサークル運営など、成果物を支える“運用側”の取り組みをまとめています。`,    };
+
+    const tabDescEl = document.getElementById("tabDesc");
+    function updateTabDesc(tagKey){
+      if(!tabDescEl) return;
+      tabDescEl.textContent = TAB_DESCRIPTIONS[tagKey] ?? "";
+    }
+
+
+    const ITEMS = [
+      { id:"moss-palace-parade", title:"MossPalaceParade / モスパレスパレード", desc:"グループで開発したアドベンチャーゲーム。ゲームデザインとシナリオを主に担当", url:"works/moss-palace-parade/moss-palace-parade.html", tags:["game","pickup"], thumb:"" },
+      { id:"fun3d",            title:"CG制作サークル FUN3D",                 desc:"3DCG技術を用いた製作に重きを置いたサークルの設立、運営",                         url:"works/fun3d/fun3d.html", tags:["ops","pickup"], thumb:"" },
+      { id:"rope-device",      title:"機能性繊維を用いた紐型デバイス",       desc:"組紐からインスピレーションを得た、入出力可能な紐型デバイスの開発",                 url:"works/rope-device/rope-device.html", tags:["research","pickup"], thumb:"" },
+      { id:"creativeai",       title:"CreativeAI / Alice in the ideal warld",desc:"AIを用いたゲーム制作をテーマにしたプロジェクト。プロジェクトリーダーを担当",       url:"works/creativeai/creativeai.html", tags:["game","research","ops"], thumb:"" },
+      { id:"christmas-princess",title:"クリスマスプリンセスとプレゼント泥棒", desc:"ブロック崩しを進化させようというテーマで制作したミニゲーム。学内イベント記事で制作", url:"works/christmas-princess/christmas-princess.html", tags:["game"], thumb:"" },
+      { id:"miraive",          title:"MIRAIVE / オンランイベント",           desc:"コロナ過で活動が制限された大学サークルのためのVRと配信を用いたイベント。運営を担当", url:"works/miraive/miraive.html", tags:["event","ops","pickup"], thumb:"" },
+      { id:"miraidain",        title:"未来建築ミライダイン",                 desc:"大学建築をテーマにしたロボットフィギュア。企画、デザインを担当",                 url:"works/miraidain/miraidain.html", tags:["product"], thumb:"" },
+      { id:"keycap-figure",    title:"キーキャップフィギュア",               desc:"ガチャガチャで販売したキーキャップフィギュア。学際で実際に販売",                 url:"works/keycap-figure/keycap-figure.html", tags:["product"], thumb:"" },      { id:"gekidan-null",     title:"演劇サークル / 劇団Null",               desc:"演劇サークルでの活動。演者、大道具、演出などの活動",                             url:"works/gekidan-null/gekidan-null.html", tags:["event","ops"], thumb:"" },
+      { id:"fun-radio",        title:"ラジオサークル FUNラジ",               desc:"ローカルFM局で実際に番組を月１に企画",                                           url:"works/fun-radio/fun-radio.html", tags:["ops"], thumb:"" },
+      { id:"milk-cap-art",     title:"MILK CAP ART",                         desc:"フィールドワークを通して考案した海外からの観光客に向けた、温泉街プロダクト案",       url:"works/milk-cap-art/milk-cap-art.html", tags:["product"], thumb:"" },
+    ];
+
+    const ITEMS_SIGNATURE = ITEMS.map(i=>i.id).join("|");
+
+    const stage  = document.getElementById("stage");
+    const tagbar = document.getElementById("tagbar");
+
+    /* ✅ 2段の向き＆速度（上段:左 / 下段:右） */
+    const LANE_DIR   = [-1, +1];
+    const LANE_SPEED = [54, 46];
+
+    const BUFFER = 220;
+
+    const ENABLE_PERSIST = true;
+    /* ✅ 段数変更なのでキーを更新（古い3段状態が混ざらないように） */
+    const STORAGE_KEY = "flow_cards_state_v6";
+
+    let STEP = 0;
+
+    let mode = "flow";
+    let currentTag = "all";
+
+    let hoverPause = false;
+    let pausedByVisibility = false;
+
+    function cssNum(name){
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return parseFloat(v) || 0;
+    }
+
+    function computeFlowStageHeight(){
+      const laneH = cssNum("--laneH");
+      const laneGap = cssNum("--laneGap");
+      const pad = cssNum("--stagePad");
+      return Math.round(pad*2 + laneH*2 + laneGap*1);
+    }
+
+    function updateStep(){
+      STEP = Math.round(cardW + cssNum("--gap"));
+    }
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+      }
+      return a;
+    }
+
+    // タグ色で背景テーマ変更
+    function hexToRgb(hex){
+      const h = hex.replace("#","").trim();
+      if(h.length !== 6) return null;
+      const r = parseInt(h.slice(0,2),16);
+      const g = parseInt(h.slice(2,4),16);
+      const b = parseInt(h.slice(4,6),16);
+      if([r,g,b].some(Number.isNaN)) return null;
+      return {r,g,b};
+    }
+
+    function relLuma({r,g,b}){
+      const f = (c)=>{
+        const x = c/255;
+        return (x <= 0.04045) ? (x/12.92) : Math.pow((x+0.055)/1.055, 2.4);
+      };
+      const R = f(r), G = f(g), B = f(b);
+      return 0.2126*R + 0.7152*G + 0.0722*B;
+    }
+
+    function applyThemeByTag(tagKey){
+      const t = TAGS.find(x=>x.key===tagKey);
+      const bg = (tagKey === "all" || !t) ? DEFAULT_BG : (t.color || DEFAULT_BG);
+
+      const rgb = hexToRgb(bg);
+      const root = document.documentElement;
+
+      root.style.setProperty("--pageBg", bg);
+
+      if(rgb && relLuma(rgb) < 0.35){
+        root.style.setProperty("--pageText", "#ffffff");
+        root.style.setProperty("--pageMuted", "rgba(255,255,255,.75)");
+      }else{
+        root.style.setProperty("--pageText", "#111111");
+        root.style.setProperty("--pageMuted", "#666666");
+      }
+    }
+
+    function makeCard(item){
+      const a = document.createElement("a");
+      a.className = "card";
+            const autoUrl = `works/${item.id}/${item.id}.html`;
+      a.href = (item.url && item.url.trim() && !item.url.startsWith("pages/")) ? item.url : autoUrl;
+      a.dataset.id = item.id;
+      a.dataset.tags = item.tags.join(",");
+      a.setAttribute("aria-label", item.desc ? (item.title + " - " + item.desc) : item.title);
+
+      const inner = document.createElement("div");
+      inner.className = "cardInner";
+
+      const thumb = document.createElement("div");
+      thumb.className = "thumb";
+
+      // 画像がある場合は「カード=画像」にする（assets/cardIcon/{id}.png）
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.src = item.thumb || `assets/cardIcon/${item.id}.png`;
+      img.alt = item.title;
+
+      img.addEventListener("load", () => {
+        // 画像が読めた時だけ、テキストレイヤーを隠して画像カード化
+        inner.classList.add("hasImage");
+      });
+
+      img.addEventListener("error", () => {
+        // 画像が無い場合はテキストカードのまま（imgを外す）
+        img.remove();
+      });
+
+      thumb.appendChild(img);
+      inner.appendChild(thumb);
+
+      const label = document.createElement("div");
+      label.className = "label";
+
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = item.title;
+      label.appendChild(title);
+
+      const desc = document.createElement("div");
+      desc.className = "desc";
+      desc.textContent = item.desc || "";
+      label.appendChild(desc);
+
+      const meta = document.createElement("span");
+      meta.className = "sub";
+      const tagsJa = (item.tags || []).map(k => (TAGS.find(t=>t.key===k)?.ja ?? k)).join(" / ");
+      meta.textContent = "";
+      label.appendChild(meta);
+
+      inner.appendChild(label);
+      a.appendChild(inner);
+
+      a.addEventListener("pointerenter", () => { hoverPause = true; });
+      a.addEventListener("pointerleave", () => { hoverPause = false; });
+
+      return a;
+    }
+
+    function buildTagButtons(){
+      tagbar.innerHTML = "";
+      for(const t of TAGS){
+        const b = document.createElement("button");
+        b.className = "tagbtn";
+        b.type = "button";
+        b.dataset.key = t.key;
+        b.style.background = t.color;
+        if(t.text) b.style.color = t.text;
+
+        const en = document.createElement("span");
+        en.className = "tag-en";
+        en.textContent = t.en;
+
+        const ja = document.createElement("span");
+        ja.className = "tag-ja";
+        ja.textContent = t.ja;
+
+        b.appendChild(en);
+        b.appendChild(ja);
+
+        b.setAttribute("aria-label", `${t.en} / ${t.ja}`);
+        b.setAttribute("aria-pressed", t.key === "all" ? "true" : "false");
+        b.addEventListener("click", () => onTagClick(t.key));
+        tagbar.appendChild(b);
+      }
+    }
+
+    function setPressed(key){
+      tagbar.querySelectorAll(".tagbtn").forEach(b=>{
+        b.setAttribute("aria-pressed", b.dataset.key === key ? "true" : "false");
+      });
+    }
+
+    const cards = [];
+    let cardW = 280, cardH = 160;
+
+    function measureCardSize(){
+      const any = cards[0]?.el;
+      if(!any) return;
+      const r = any.getBoundingClientRect();
+      cardW = Math.round(r.width);
+      cardH = Math.round(r.height);
+      updateStep();
+    }
+
+    function stageWidth(){
+      return stage.clientWidth;
+    }
+
+    function flowLaneY(laneIndex){
+      const laneH = cssNum("--laneH");
+      const laneGap = cssNum("--laneGap");
+      const pad = cssNum("--stagePad");
+      const top = pad + laneIndex * (laneH + laneGap);
+      return Math.round(top + (laneH - cardH) / 2);
+    }
+
+    function setStageHeight(px){
+      stage.style.height = px + "px";
+    }
+
+    function clearStageHeightToCss(){
+      stage.style.height = "";
+    }
+
+    function placeFlowFixedPitch(){
+      measureCardSize();
+      const byLane = [[],[]];
+
+      const shuffled = shuffle(cards);
+      for(let i=0;i<shuffled.length;i++){
+        const lane = i % 2;
+        shuffled[i].lane = lane;
+        byLane[lane].push(shuffled[i]);
+      }
+
+      const w = stageWidth();
+      for(let lane=0; lane<2; lane++){
+        const list = shuffle(byLane[lane]);
+        const y = flowLaneY(lane);
+
+        const phase = Math.floor(Math.random() * STEP);
+        const startX = -BUFFER + phase;
+
+        for(let i=0;i<list.length;i++){
+          const c = list[i];
+          c.x = startX + i * STEP;
+          c.y = y;
+          c.flowX = c.x;
+          c.flowY = c.y;
+          c.el.style.opacity = "1";
+          c.el.style.pointerEvents = "auto";
+          c.el.style.transform = `translate3d(${c.x}px,${c.y}px,0)`;
+        }
+
+        const lastX = startX + (list.length - 1) * STEP;
+        if(lastX < w - cardW){
+          const nudge = Math.floor((w - cardW - lastX) * 0.35);
+          for(const c of list){
+            c.x += nudge;
+            c.flowX = c.x;
+            c.el.style.transform = `translate3d(${c.x}px,${c.y}px,0)`;
+          }
+        }
+      }
+    }
+
+    function wrapFlowPositionsFixedPitch(){
+      const w = stageWidth();
+
+      for(let lane=0; lane<2; lane++){
+        const list = cards.filter(c=>c.lane===lane);
+        if(list.length === 0) continue;
+
+        let minX = Infinity, maxX = -Infinity;
+        for(const c of list){
+          minX = Math.min(minX, c.x);
+          maxX = Math.max(maxX, c.x);
+        }
+
+        const dir = LANE_DIR[lane];
+
+        for(const c of list){
+          if(dir < 0){
+            if(c.x + cardW < -BUFFER){
+              let nx = maxX + STEP;
+              if(nx + cardW < -BUFFER) nx = w + BUFFER;
+              c.x = nx;
+              maxX = Math.max(maxX, c.x);
+            }
+          }else{
+            if(c.x > w + BUFFER){
+              let nx = minX - STEP;
+              if(nx > w + BUFFER) nx = -BUFFER - cardW;
+              c.x = nx;
+              minX = Math.min(minX, c.x);
+            }
+          }
+        }
+      }
+    }
+
+    function addTween(on){
+      for(const c of cards){
+        c.el.classList.toggle("tween", on);
+      }
+    }
+
+    function snapshotFlowPositions(){
+      for(const c of cards){
+        c.flowX = c.x;
+        c.flowY = c.y;
+      }
+    }
+
+    function computeGridTargets(tagKey){
+      const matched = cards.filter(c => c.el.dataset.tags.split(",").includes(tagKey));
+      const w = stageWidth();
+      const pad = 10;
+      const gap = 18;
+
+      const cols = Math.max(2, Math.min(6, Math.floor((w - pad*2 + gap) / (cardW + gap))));
+      const rows = Math.max(1, Math.ceil(matched.length / cols));
+
+      const gridH = pad*2 + rows * cardH + (rows-1) * gap;
+      setStageHeight(gridH);
+
+      const startX = pad;
+      const startY = pad;
+
+      const targets = new Map();
+      for(let i=0; i<matched.length; i++){
+        const r = Math.floor(i / cols);
+        const col = i % cols;
+        const x = Math.round(startX + col * (cardW + gap));
+        const y = Math.round(startY + r * (cardH + gap));
+        targets.set(matched[i], {x,y});
+      }
+      return { targets };
+    }
+
+    function enterFilter(tagKey){
+      if(mode === "toFilter" || mode === "toFlow") return;
+
+      applyThemeByTag(tagKey);
+
+      snapshotFlowPositions();
+      mode = "toFilter";
+      addTween(true);
+
+      const { targets } = computeGridTargets(tagKey);
+      const w = stageWidth();
+
+      for(const c of cards){
+        const isMatch = targets.has(c);
+        if(isMatch){
+          const p = targets.get(c);
+          c.el.style.opacity = "1";
+          c.el.style.pointerEvents = "auto";
+          c.el.style.transform = `translate3d(${p.x}px,${p.y}px,0)`;
+        }else{
+          const offX = (LANE_DIR[c.lane] < 0) ? (-cardW - 260) : (w + 260);
+          const offY = c.flowY;
+          c.el.style.opacity = "0";
+          c.el.style.pointerEvents = "none";
+          c.el.style.transform = `translate3d(${offX}px,${offY}px,0)`;
+        }
+      }
+
+      setTimeout(() => {
+        mode = "filter";
+        currentTag = tagKey;
+        if(ENABLE_PERSIST) saveState();
+      }, 560);
+    }
+
+    function updateFilter(tagKey){
+      if(mode !== "filter") return;
+
+      applyThemeByTag(tagKey);
+
+      addTween(true);
+      const { targets } = computeGridTargets(tagKey);
+      const w = stageWidth();
+
+      for(const c of cards){
+        const isMatch = targets.has(c);
+        if(isMatch){
+          const p = targets.get(c);
+          c.el.style.opacity = "1";
+          c.el.style.pointerEvents = "auto";
+          c.el.style.transform = `translate3d(${p.x}px,${p.y}px,0)`;
+        }else{
+          const offX = (LANE_DIR[c.lane] < 0) ? (-cardW - 260) : (w + 260);
+          const offY = c.flowY;
+          c.el.style.opacity = "0";
+          c.el.style.pointerEvents = "none";
+          c.el.style.transform = `translate3d(${offX}px,${offY}px,0)`;
+        }
+      }
+
+      currentTag = tagKey;
+      if(ENABLE_PERSIST) saveState();
+    }
+
+    function exitToFlow(){
+      if(mode === "toFilter" || mode === "toFlow") return;
+
+      applyThemeByTag("all");
+
+      
+        updateTabDesc("all");mode = "toFlow";
+      addTween(true);
+
+      const flowH = computeFlowStageHeight();
+      stage.style.height = flowH + "px";
+
+      for(const c of cards){
+        c.el.style.opacity = "1";
+        c.el.style.pointerEvents = "auto";
+        c.el.style.transform = `translate3d(${c.flowX}px,${c.flowY}px,0)`;
+      }
+
+      setTimeout(() => {
+        for(const c of cards){
+          c.x = c.flowX;
+          c.y = c.flowY;
+        }
+        addTween(false);
+        mode = "flow";
+        currentTag = "all";
+        clearStageHeightToCss();
+        if(ENABLE_PERSIST) saveState();
+      }, 560);
+    }
+
+    function onTagClick(key){
+      setPressed(key);
+
+      
+
+      updateTabDesc(key);
+if(key === "all"){
+        applyThemeByTag("all");
+        if(mode === "filter") exitToFlow();
+        return;
+      }
+
+      if(mode === "flow") enterFilter(key);
+      else if(mode === "filter") updateFilter(key);
+    }
+
+    // ===== 永続化 =====
+    function saveState(){
+      if(!ENABLE_PERSIST) return;
+
+      const state = {
+        ts: Date.now(),
+        mode,
+        currentTag,
+        sig: ITEMS_SIGNATURE,
+        cards: cards.map(c => ({
+          id: c.el.dataset.id,
+          lane: c.lane,
+          x: c.x, y: c.y,
+          flowX: c.flowX, flowY: c.flowY
+        }))
+      };
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }catch(e){}
+    }
+
+    function restoreState(){
+      if(!ENABLE_PERSIST) return false;
+
+      let raw = null;
+      try{ raw = localStorage.getItem(STORAGE_KEY); }catch(e){ return false; }
+      if(!raw) return false;
+
+      let state = null;
+      try{ state = JSON.parse(raw); }catch(e){ return false; }
+      if(!state || !state.cards) return false;
+
+      
+
+      // カード一覧が変わっていたら（追加/削除/ID変更など）古い保存状態は使わない
+      if(state.sig && state.sig !== ITEMS_SIGNATURE) return false;
+      // 旧形式（sig無し）は安全のため無視して再配置
+      if(!state.sig) return false;
+if(typeof state.ts === "number" && (Date.now() - state.ts) > 7*24*60*60*1000) return false;
+
+      const map = new Map(state.cards.map(v => [v.id, v]));
+      let ok = 0;
+
+      for(const c of cards){
+        const v = map.get(c.el.dataset.id);
+        if(!v) continue;
+
+        const lane = (typeof v.lane === "number") ? (v.lane % 2) : c.lane;
+        c.lane = lane;
+        c.x = (typeof v.x === "number") ? v.x : c.x;
+        c.y = (typeof v.y === "number") ? v.y : c.y;
+        c.flowX = (typeof v.flowX === "number") ? v.flowX : c.flowX;
+        c.flowY = (typeof v.flowY === "number") ? v.flowY : c.flowY;
+        ok++;
+      }
+      if(ok === 0) return false;
+
+      mode = state.mode || "flow";
+      currentTag = state.currentTag || "all";
+
+      applyThemeByTag(mode === "filter" ? currentTag : "all");
+
+      
+      updateTabDesc(mode === "filter" ? currentTag : "all");
+
+      if(mode === "filter" && currentTag !== "all"){
+        setPressed(currentTag);
+
+        addTween(false);
+        const { targets } = computeGridTargets(currentTag);
+        const w = stageWidth();
+
+        for(const c of cards){
+          const isMatch = targets.has(c);
+          if(isMatch){
+            const p = targets.get(c);
+            c.el.style.opacity = "1";
+            c.el.style.pointerEvents = "auto";
+            c.el.style.transform = `translate3d(${p.x}px,${p.y}px,0)`;
+          }else{
+            const offX = (LANE_DIR[c.lane] < 0) ? (-cardW - 260) : (w + 260);
+            const offY = c.flowY;
+            c.el.style.opacity = "0";
+            c.el.style.pointerEvents = "none";
+            c.el.style.transform = `translate3d(${offX}px,${offY}px,0)`;
+          }
+        }
+      }else{
+        setPressed("all");
+        clearStageHeightToCss();
+        addTween(false);
+        for(const c of cards){
+          c.y = flowLaneY(c.lane);
+          c.flowY = c.y;
+          c.el.style.opacity = "1";
+          c.el.style.pointerEvents = "auto";
+          c.el.style.transform = `translate3d(${c.x}px,${c.y}px,0)`;
+        }
+      }
+
+      return true;
+    }
+
+    // ===== アニメーション =====
+    let lastT = 0;
+    function tick(t){
+      if(document.hidden || pausedByVisibility){
+        lastT = t;
+        requestAnimationFrame(tick);
+        return;
+      }
+
+      let dt = (t - lastT) / 1000 || 0;
+      if(dt > 0.08) dt = 0;
+      lastT = t;
+
+      if(mode === "flow" && !hoverPause){
+        for(const c of cards){
+          const sp = LANE_SPEED[c.lane] || 46;
+          const dir = LANE_DIR[c.lane] || -1;
+          c.x += dir * sp * dt;
+          c.y = flowLaneY(c.lane);
+          c.el.style.transform = `translate3d(${c.x}px,${c.y}px,0)`;
+        }
+        wrapFlowPositionsFixedPitch();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    function init(){
+      buildTagButtons();
+
+      for(const it of ITEMS){
+        const el = makeCard(it);
+        stage.appendChild(el);
+        cards.push({ el, lane:0, x:0, y:0, flowX:0, flowY:0 });
+      }
+
+      clearStageHeightToCss();
+      measureCardSize();
+
+      const restored = restoreState();
+      if(!restored){
+        applyThemeByTag("all");
+        placeFlowFixedPitch();
+        addTween(false);
+        saveState();
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if(document.hidden){
+          pausedByVisibility = true;
+          saveState();
+        }else{
+          pausedByVisibility = false;
+          lastT = performance.now();
+        }
+      });
+
+      window.addEventListener("pagehide", () => saveState());
+      window.addEventListener("beforeunload", () => saveState());
+
+      window.addEventListener("resize", () => {
+        measureCardSize();
+        if(mode === "filter"){
+          updateFilter(currentTag);
+        }else{
+          clearStageHeightToCss();
+          saveState();
+        }
+      });
+
+      lastT = performance.now();
+      requestAnimationFrame(tick);
+
+      if(ENABLE_PERSIST){
+        setInterval(() => {
+          if(!document.hidden) saveState();
+        }, 3000);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

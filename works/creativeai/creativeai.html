@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>プロジェクトタイトル</title>
+  <meta name="description" content="プロジェクト概要（1〜2文）" />
+
+  <link rel="stylesheet" href="../../css/work.css" />
+  <script defer src="../../js/work.js"></script>
+
+  <!-- 方式1：ページごとにテーマを変える（ここだけ編集） -->
+  <style>
+    :root{
+      /* 色 */
+      --bg: #A8ECFF;
+      --text: #2e2e2e;
+      --muted: #2e2e2e;
+      --line: #777777;
+
+      --paper: #777777;          /* 画像未設定時の灰箱 */
+      --accent: #777777;         /* スライダーのドット等 */
+
+      --header-bg: #A8ECFF;
+      --header-border: #777777;
+
+      /* フォント */
+      --font: "Noto Serif JP","Yu Mincho","Hiragino Mincho ProN","Times New Roman",serif;
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header class="header">
+    <div class="header__inner">
+      <a class="back" href="../../" aria-label="Homeに戻る">←Home</a>
+
+      <!-- <nav class="nav" aria-label="ページ内ナビゲーション">
+        <a class="nav__item" href="#top">Top</a>
+        <a class="nav__item" href="#concept">Concept</a>
+        <a class="nav__item" href="#work">Work</a>
+        <a class="nav__item" href="#role">Role</a>
+        <a class="nav__item" href="#achieve">Achieve</a>
+        <a class="nav__item" href="#link">Link</a> -->
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- Top -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <h1 class="title">CreativeAI<br />Alice in the ideal warld</h1>
+          <p class="lead">
+            AIを用いたゲーム制作をテーマにしたプロジェクトです。私はプロジェクトリーダーとして、制作進行、成果物の取りまとめまでを担当しました。<br />
+            <br />
+            2022年に行われたこのプロジェクトは、Stable DiffusionやGPT-4がリリースされる、まさに生成AIの黎明期と言えるタイミングのプロジェクトであり、創作×AIに注目した最新鋭の試みでした。<br />
+            本プロジェクトは大きく「プログラム」「ビジュアル」「音響」「シナリオ」の４つのチームに分かれており、それぞれのチームが開発を進めながら、有用な生成AIの活用法を模索していきました。<br />
+            <br />
+            メンバー人数：１５人<br />
+            研究期間：１年<br />
+            主な使用ツール：Unity、Blender、Stable Diffusion、CLIP-Mesh、GPT-2<br />
+          </p>
+        </div>
+
+        <!-- 右上：画像スライダー -->
+        <div class="hero__media">
+          <div class="carousel" data-carousel aria-label="画像スライダー">
+            <div class="carousel__viewport" aria-live="polite">
+              <figure class="carousel__item" data-caption="生成AI技術×ゲーム制作をテーマにシナリオベースのアドベンチャーゲーム「Alice in the ideal warld」を制作した。">
+                <img src="./images/shot1.jpg" alt="画像1" />
+              </figure>
+              <figure class="carousel__item" data-caption="生成AIに関する当時最先端の研究を調査。シナリオ生成、レベルデザイン、キャラクターデザインなど様々な工程で生成AI技術の使用を検討した。">
+                <img src="./images/shot2.jpg" alt="画像2" />
+              </figure>
+              <figure class="carousel__item" data-caption="生成AIのを使用し生成されたデータや素材を元にunityでゲームを実装。">
+                <img src="./images/shot3.jpg" alt="画像3" />
+              </figure>
+            </div>
+
+            <div class="carousel__caption" data-carousel-caption></div>
+
+            <div class="carousel__controls">
+              <button class="carousel__btn" type="button" data-carousel-prev aria-label="前の画像へ">◀</button>
+              <div class="carousel__dots" data-carousel-dots aria-label="スライド位置"></div>
+              <button class="carousel__btn" type="button" data-carousel-next aria-label="次の画像へ">▶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Concept -->
+    <!-- <section id="concept" class="section section--center">
+      <h2 class="h2">活動の目的や意義</h2>
+
+      <figure class="wideFigure"> -->
+        <!-- 画像を置くならこの img を使う -->
+        <!-- <img src="./images/concept.jpg" alt="活動の目的や意義を表す画像" /> -->
+      <!-- </figure>
+
+      <p class="note">（必要なら一言だけ添える）</p>
+    </section> -->
+
+    <!-- Work -->
+    <!-- <section id="work" class="section section--center">
+      <h2 class="h2">活動の体制</h2>
+
+      <figure class="wideFigure"> -->
+        <!-- <img src="./images/team.jpg" alt="活動の体制を表す画像" /> -->
+      <!-- </figure>
+
+      <p class="note">（必要なら一言だけ添える）</p>
+    </section> -->
+
+    <!-- Role -->
+    <section id="role" class="section">
+      <h2 class="h2 h2--left">私の役割、やったこと</h2>
+
+      <div class="body">
+        １．マネジメント<br />
+        　・１年の期限の中、プロジェクトのゴールを定め計画を立てる<br />
+        　・定期的な進捗共有を行い、計画の進行を把握<br />
+        　・メンバー内で情報の齟齬が起こらないように、各チームの懸け橋になる<br />
+        <br />
+        ２．調査<br />
+        　・当時の画像生成に関する仕組み、研究を調査<br />
+        　・3DCG自動生成に関する研究を調査、実際に3Dモデルを生成し検証<br />
+        <br />
+        ３．実装<br />
+        　・unity、C＃でのゲームシステムの実装<br />
+        　・blenderを用いた3Dモデルの制作、アニメーションの作成<br />
+      </div>
+    </section>
+
+    <!-- Achieve -->
+    <section id="achieve" class="section">
+      <h2 class="h2 h2--left">発表実績</h2>
+
+      <ul class="list">
+        <li class="placeholder"></li>
+        <li><a href="https://confit.atlas.jp/guide/event/jsai2023/session/4T06-10/detail?lang=ja" target="_blank" rel="noreferrer">第37回　人工知能学会全国大会：AIと人間の共創によるゲームギミック・キャラクターデザイン・音響効果・シナリオ要素を統合したゲームシステムの構築</a></li>
+        <!-- <li>公開：○○</li> -->
+      </ul>
+    </section>
+
+    <!-- Link -->
+    <section id="link" class="section">
+      <h2 class="h2 h2--left">外部リンク</h2>
+
+      <ul class="links">
+        <li class="placeholder"></li>
+        <li><a href="https://www.fun.ac.jp/wp-content/uploads/2023/04/document05_.pdf" target="_blank" rel="noreferrer">公立はこだて未来大学 2022 年度 システム情報科学実習グループ報告書</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

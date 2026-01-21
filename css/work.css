@@ -1,0 +1,248 @@
+:root{
+  --page-max: 1080px;
+
+  /* テーマ（作品ページで上書きする想定） */
+  --bg: #ffffff;
+  --text: #111111;
+  --muted: #666666;
+  --line: #dddddd;
+  --paper: #e6e6e6;
+  --accent: #777777;
+
+  --header-bg: rgba(255,255,255,0.92);
+  --header-border: #dddddd;
+
+  --font: "Noto Serif JP","Yu Mincho","Hiragino Mincho ProN","Times New Roman",serif;
+
+  /* 余白 */
+  --pad-x: 56px;
+  --section-gap: 140px;
+
+  /* JSが実測して上書き（初期値） */
+  --header-offset: 76px;
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.95;
+  letter-spacing: 0.01em;
+
+  /* fixedヘッダー分だけ本文を下げる（JSが正しい高さに更新） */
+  padding-top: var(--header-offset);
+}
+
+a{ color: inherit; text-decoration: none; }
+a:hover{ text-decoration: underline; }
+
+img{ display: block; width: 100%; height: auto; }
+
+/* ===== Fixed Header（常に上に残る） ===== */
+.header{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--header-border);
+
+  padding: 14px 0;
+}
+
+.header__inner{
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.back{
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* 横に長くなっても崩れない（必要なら横スクロール） */
+.nav{
+  display: flex;
+  gap: 22px;
+  font-size: 14px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar{ display: none; }
+.nav__item{ opacity: 0.9; }
+
+/* ===== Main ===== */
+.main{
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 40px var(--pad-x) 160px;
+}
+
+/* ===== Hero ===== */
+.hero{ padding-top: 18px; }
+.hero__inner{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+
+.title{
+  margin: 0 0 18px;
+  font-size: 28px;
+  font-weight: 700;
+}
+.lead{
+  margin: 0;
+  font-size: 14px;
+  max-width: 42ch;
+}
+
+/* ===== Section ===== */
+.section{
+  margin-top: var(--section-gap);
+  scroll-margin-top: calc(var(--header-offset) + 16px);
+}
+
+.section--center{ text-align: center; }
+
+.h2{
+  margin: 0 0 26px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.h2--left{ text-align: left; }
+
+.body{
+  font-size: 14px;
+  max-width: 125ch;
+}
+
+.note{
+  margin: 18px auto 0;
+  max-width: 72ch;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ===== Wide Figure（ラフの灰箱） ===== */
+.wideFigure{
+  margin: 0 auto;
+  max-width: 900px;
+  background: var(--paper);
+  min-height: 300px;
+}
+
+/* ===== Carousel ===== */
+.carousel{ width: 100%; }
+
+.carousel__viewport{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 909 / 647;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.carousel__item{
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.carousel__item.is-active{ opacity: 1; }
+
+.carousel__item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel__caption{
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 1.6em;
+}
+
+.carousel__controls{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+}
+
+.carousel__btn{
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px 0;
+}
+.carousel__btn:hover{ color: var(--text); }
+
+.carousel__dots{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.carousel__dot{
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.carousel__dot[aria-current="true"]{
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ===== Lists ===== */
+.list,
+.links{
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.placeholder{
+  color: var(--muted);
+  list-style: none;
+  padding-left: 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 980px){
+  :root{
+    --pad-x: 22px;
+    --section-gap: 110px;
+  }
+
+  .hero__inner{
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .lead{ max-width: none; }
+  .wideFigure{ max-width: 100%; min-height: 220px; }
+}
